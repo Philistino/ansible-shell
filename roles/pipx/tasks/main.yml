@@ -1,0 +1,39 @@
+---
+- name: pipx | Install tools for adding PPA repositories
+  become: true
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: pipx | Add Dead Snakes Python package repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+    update_cache: true
+
+- name: pipx | Install Python version
+  become: true
+  ansible.builtin.apt:
+    state: present
+    name:
+      - "python{{ python_version }}"
+      - "python{{ python_version }}-dev"
+      - "python{{ python_version }}-venv"
+
+- name: pipx | Ensure pip is installed
+  shell: "python{{ python_version }} -m ensurepip"
+  args:
+    executable: /bin/bash
+
+- name: pipx | install pipx
+  shell: "python{{ python_version }} -m pip install --user pipx"
+  args:
+    executable: /bin/bash
+
+- name: pipx | install pipx apps
+  community.general.pipx:
+    name: "{{ item }}"
+    state: present
+    executable: "~/.local/bin/pipx"
+  loop: "{{ pipx_apps }}"

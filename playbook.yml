@@ -1,0 +1,70 @@
+- hosts: localhost
+  roles:
+    - role: pipx
+    - role: common
+    - role: fzf
+    - role: gantsign.golang
+      golang_install_dir: "~/go/bin"
+    - role: viasite-ansible.zsh
+      zsh_fzf_path: "$HOME/.local/bin"
+      zsh_custom_after: |
+          alias size="rclone size ."
+          alias tre="tree -h -D -L 2"
+          alias venv="python3 -m venv venv && source venv/bin/activate"
+          alias vpy="venv/bin/python3"
+          alias activate="source venv/bin/activate"
+          alias fre="free m -h"
+          alias edit_aliases="nano ~/.zshrc.local && source ~/.zshrc.local"
+          alias update="sudo apt update && sudo apt -y dist-upgrade && sudo apt autoremove -y"
+          alias exa="exa --icons -1 --color=always --group-directories-first"
+          alias fre="free m -h"
+          alias cplow_log="tail -F /opt/cloudplow/cloudplow.log"
+          export PATH="$PATH:/usr/local/go/bin"
+          export PATH="$PATH:${HOME}/go/bin"
+          export PATH="$PATH:${HOME}/.local/bin"
+          export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
+          export EDITOR=micro
+          # OSC 1337 - Set current directory
+          precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
+          eval "$(zoxide init zsh)"
+      zsh_hotkeys:
+        # home & end keys work
+        - { hotkey: '\e[1~', action: beginning-of-line } # home
+        - { hotkey: '\e[4~', action: end-of-line } # end
+        # fzf-widgets
+        - { hotkey: '\ew' ,   action: fzf-select-widget,            bundle: "{{ fzf_widgets }}" } # alt+w
+        # - { hotkey: '^@.' ,  action: fzf-edit-dotfiles,            bundle: "{{ fzf_widgets }}" }
+        - { hotkey: '\ec',   action: fzf-change-directory,         bundle: "{{ fzf_widgets }}" } # alt+c
+        - { hotkey: '\ef',   action: fzf-edit-files,               bundle: "{{ fzf_widgets }}" } # alt+f
+        - { hotkey: '\ek',   action: fzf-kill-processes,           bundle: "{{ fzf_widgets }}" } # alt+k
+        # - { hotkey: '^@s',   action: fzf-exec-ssh,                 bundle: "{{ fzf_widgets }}" }
+        - { hotkey: '^\' ,   action: fzf-change-recent-directory,  bundle: "{{ fzf_widgets }}" } # ctrl+\
+        - { hotkey: '^r',    action: fzf-insert-history,           bundle: "{{ fzf_widgets }}" } # ctrl+r
+        - { hotkey: '^t',   action: fzf-insert-files,             bundle: "{{ fzf_widgets }}" } # ctrl+t
+        - { hotkey: '\ed',   action: fzf-insert-directory,         bundle: "{{ fzf_widgets }}" } # ctrl+x d
+        # fzf-widgets: Git
+        # - { hotkey: '^@g',   action: fzf-select-git-widget,        bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@ga',  action: fzf-git-add-files,            bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@gc',  action: fzf-git-change-repository,    bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@gco', action: fzf-git-checkout-branch,      bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@gd',  action: fzf-git-delete-branches,      bundle: "{{ fzf_widgets }}" }
+        # fzf-widgets: GitHub
+        # - { hotkey: '^@gh',   action: fzf-select-github-widget,    bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@ghi',  action: fzf-github-show-issue,       bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@ghe',  action: fzf-github-edit-issue,       bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@gho',  action: fzf-github-open-issue,       bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@ghc',  action: fzf-github-close-issue,      bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@ghco', action: fzf-github-comment-issue,    bundle: "{{ fzf_widgets }}" }
+        # fzf-widgets: Docker
+        # - { hotkey: '^@d',   action: fzf-select-docker-widget,     bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dk',  action: fzf-docker-kill-containers,   bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dl',  action: fzf-docker-logs-container,    bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dr',  action: fzf-docker-remove-containers, bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dri', action: fzf-docker-remove-images,     bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@drv', action: fzf-docker-remove-volumes,    bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dsa', action: fzf-docker-start-containers,  bundle: "{{ fzf_widgets }}" }
+        # - { hotkey: '^@dso', action: fzf-docker-stop-containers,   bundle: "{{ fzf_widgets }}" }
+        # autosuggestions
+        # - { hotkey: '{{ zsh_autosuggestions_bind_key }}',   action: autosuggest-accept, bundle: zsh-users/zsh-autosuggestions }
+        # - { hotkey: '{{ zsh_autosuggestions_bind_key_2 }}', action: autosuggest-accept, bundle: zsh-users/zsh-autosuggestions }
+

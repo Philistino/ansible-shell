@@ -1,0 +1,6 @@
+---
+- name: common | install packages
+  become: true
+  ansible.builtin.apt:
+    state: present
+    name: "{{ packages }}"
