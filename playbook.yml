@@ -4,7 +4,7 @@
     - role: common
     - role: fzf
     - role: gantsign.golang
-      golang_install_dir: "~/go/bin"
+      golang_install_dir: "/usr/local/go"
     - role: viasite-ansible.zsh
       zsh_fzf_path: "$HOME/.local/bin"
       zsh_custom_after: |
